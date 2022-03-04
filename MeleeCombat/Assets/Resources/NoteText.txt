@@ -1,0 +1,32 @@
+#Situation in the region
+This province belonged to the old Baron for the last few decades. He was widely known for his extreme loyalty towards the crown, and achievements on the battlefield. However, baron was a mediocre ruler and his lands were never too prosperous.
+>
+One month ago, the so-called Order of Iron Tusk began a rapid invasion on crown's territory occupying one province after another, crushing any resistance and establishing a regime of strict control and militarism.
+>
+Province is under Order for about 20 days and barely any news came from here.
+-------------------------------------------------------------------
+#Martial law in the region
+A soldier from patrol mentioned that this province is "war zone".		
+>
+I should be careful with soldiers, armed strangers like me are not welcomed here.
+-------------------------------------------------------------------
+#Rebel force in the eastern woods
+There are rumors in village about unknown group of rebels, hiding in forest on the east, preparing to fight back Order of Iron Tusk.
+>
+Young people, inspired to free land from Order escape to forests, trying to join this group. 
+-------------------------------------------------------------------
+#Army of Iron Tusk has serious problems with supplies
+The invasion operation that the Order had carried out so quickly and successfully is now facing a shortage of supplies.
+>
+In fact Order's garrison has no choice but to take all the food it needs from local villagers.
+-------------------------------------------------------------------
+#Village
+Small settlement, that mostly lives off a large wheat field on the west and sea bay on the north.
+>
+I can definitely ask some questions and buy food there.
+-------------------------------------------------------------------
+#Refill supplies
+I still have some food but not enough for a long journey. Maybe I should check local village?
+>
+Objective: Get at least 20 supplies.
+-------------------------------------------------------------------

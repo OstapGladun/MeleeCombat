@@ -1,0 +1,121 @@
+#1
+While walking by the road, you see a small enemy patrol approaching.
+-------------------------------------------------------------------
+#2
+You slowly hide your weapon and raise your hands to show that your intentions are peaceful. Soldiers prepare their weapons and the officer gives you the signal to stop.
+>
+"This is a war zone, and you don't look like a local villager..."
+>
+You show him the bag of gold you prepared.
+>
+"Ah, I see, have a nice day, good sir."
+>
+The officer grabs gold and orders his men to continue to march.
+-------------------------------------------------------------------
+#3
+As you get closer to the windmill, you hear few loud voices from inside. You can't understand the exact topic, but they are surely arguing.
+-------------------------------------------------------------------
+#4
+As you enter mill you see two fully armed soldiers from the Order of Iron Tusk and a slim, old man in peasent clothes, probably a miller. Soldiers immediately spot you.
+>
+"And who's that bastard over here, leitenaunt?" - asks one of soldiers.
+>
+"Sir, we are trying to do our job, and it would be easier if you got out of here." - says leitenaunt.
+>
+"And what job is it?" - you ask carefully.
+>
+"This weirdo is getting too curious, isn't he?" - says first soldier.
+>
+"It's okay, there is no secret, we are collecting grain to feed our army, and this old man refuses to give it to us." - explains leitenaunt.
+-------------------------------------------------------------------
+#5
+You stay outside and overhear dialogue inside the mill.
+>
+"This is the last time we ask you nicely, old man" - hoarse voice says.
+>
+"You can ask me as much as you want, I have no grain for you, go grow your own crops to feed your army." - elderly voice answers.
+>
+"Our old man is getting rude, isn't he?" - another voice, even more hoarse.
+>
+"Yeah, you are right, we had enough. Just grab those bags, corporal, and let's go." - first voice orders.
+>
+You hear movement, heavy steps, and then two armed soldiers from the Order of Iron Tusk exit the mill. Both are carrying a few full bags of grain. You stay unnoticed as soldiers put bags on their cart and leave.
+>
+You can now safely go inside and talk with the old man.
+-------------------------------------------------------------------
+#6
+You go inside and see miller. He stands silent in the corner of the room with blank look, which is understandable after his conversation with soldiers.
+>
+"Hey, I was just passing buy and I don't want to interfer, but I thought, if you are a miller and you have food here I can buy some. For a good price of course." - you say.
+>
+Miller suddenly notices you.
+>
+"You? I don't know who you are, but you are no better than them. Those who come here with weapons will never be welcomed. Go away."
+>
+Miller refuses to say anything else and you see no choice but to leave.
+-------------------------------------------------------------------
+#7
+You go inside and see miller. He stands silent in the corner of the room with a blank look, which is understandable after his conversation with soldiers.
+>
+"Hey, I was just passing buy and I see you are having serious trouble here. Those soldiers just took your grain by force, right?" - you ask.
+>
+Miller suddenly notices you.
+>
+"Yes, they did. And they will keep doing it, as long as they have weapons, and we don't."
+>
+"So the Order of Iron Tusk is collecting fodder, and you don't have enough?"
+>
+"Well, we have grain, but just enough to survive winter. And they still have no rights to take it from us for their stupid war needs."
+>
+"I don't want to provoke, but if the majority of people in the village has similar attitude, why don't you fight the Order?"
+>
+"Oh, we do. There are rumors about some mysterious rebel force hiding in the forest on the east. A few rumors are enough for our young people to take improvised arms and escape to the woods."
+>
+"And why wouldn't you do the same?"
+>
+"Well, I live in this windmill and rarely have contacts with my fellow villagers, so those rumors are nothing more than rumors for me. Someone has to take care of the mill, after all."
+>
+"Huh, I understand, I have to go now."
+>
+Miller coldly says goodbye and goes upstairs.
+-------------------------------------------------------------------
+#8
+"I was just passing by, I don't want to interfere, do your job." - you say. 
+>
+"Glad you understood, sir, we need to get food for our battle brothers. Our Order's invading operation wasn't free, so now we have some issues with supplies." - explains leitenaunt.
+>
+"Yeah, and those villagers, despite clearly having enough grain, refuse to provide us with it." - says other soldier.
+>
+"Okay, just take those bags and let's go." - leitenaunt orders.
+>
+The soldiers grab several large sacks of grain and head to their cart, waiting outside. Old miller clearly cannot do anything and just stands silently in the corner. He is unlikely to speak to you after what happened, so you see no choice but to leave. 
+-------------------------------------------------------------------
+#9
+As you defeat both Soldiers of Iron Tusk they quickly escape the mill and rush to their cart. You hide weapon and approach old man, who waited out your browl with soldiers in the corner.
+>
+"I'm gratefull for your assistence, but what made you help me?" - old miller asks.
+-------------------------------------------------------------------
+#10
+"It's simple, my journey was long and I need food to keep traveling, so maybe you have some ..." -  as you talk, miller interupts you.
+>
+"Ah, I see, it was obvious that you wouldn't help from sheer kindness. So you are no better than those soldiers, and you are not getting any food. Just another person with weapon who wants to take something by force. Go away, you are not welcomed here."
+>
+Miller refuses to say anything else and you see no choice but to leave.
+-------------------------------------------------------------------
+#11
+"Honestly, I'm just curious what's happening in this province. So the Order of Iron Tusk is collecting fodder, and you don't have enough?" - you say.
+>
+"Well, we have grain, but just enough to survive winter. And they still have no rights to take it from us for their stupid war needs."
+>
+"I don't want to provoke, but if the majority of people in the village has similar attitude, why don't you fight the Order?"
+>
+"Oh, we do. There are rumors about some mysterious rebel force hiding in the forest on the east. A few rumors are enough for our young people to take improvised arms and escape to the woods."
+>
+"And why wouldn't you do the same?"
+>
+"Well, I live in this windmill and rarely have contacts with my fellow villagers, so those rumors are nothing more than rumors for me. Someone has to take care of the mill, after all."
+>
+"Huh, I understand, I have to go now."
+>
+"Good luck, sir. I am not sure, if beating those soldiers will help in long term, but I will still tell others about your assistance."
+-------------------------------------------------------------------
