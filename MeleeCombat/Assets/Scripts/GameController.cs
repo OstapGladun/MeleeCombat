@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     public int CurrentLocationIndex;
     //same here
     public int InitialEventIndex;
+    public string BattleLandscape;
     public List<string> Abilities = new List<string>();
     public List<string> knownRumors = new List<string>();
     public List<string> knownEnemies = new List<string>();

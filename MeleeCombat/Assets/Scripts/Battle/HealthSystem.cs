@@ -6,33 +6,34 @@ using UnityEngine.UI;
 public class HealthSystem : MonoBehaviour
 {
     public int index;
-    public Sprite HealthEmpty;
-    public Sprite ArmorEmpty;
-    public Sprite[] Shield;
+    [SerializeField]private Sprite HealthEmpty;
+    [SerializeField]private Sprite ArmorEmpty;
+    [SerializeField]private Sprite[] Shield;
     public GameObject Unit;
+    private SpriteRenderer spriteRenderer;
 
-    void Start()
+    private void Start()
     {
-
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         if (Unit == GameObject.Find("Knight"))
         {
-            if (gameObject.GetComponent<SpriteRenderer>().sprite.name == "health-full" && index > Unit.GetComponent<BattleKnight>().health)
+            if (spriteRenderer.sprite.name == "health-full" && index > Unit.GetComponent<BattleKnight>().health)
             {
-                gameObject.GetComponent<SpriteRenderer>().sprite = HealthEmpty;
+                spriteRenderer.sprite = HealthEmpty;
             }
-            if (gameObject.GetComponent<SpriteRenderer>().sprite.name == "armor-full" && index > Unit.GetComponent<BattleKnight>().armor)
+            if (spriteRenderer.sprite.name == "armor-full" && index > Unit.GetComponent<BattleKnight>().armor)
             {
-                gameObject.GetComponent<SpriteRenderer>().sprite = ArmorEmpty;
+                spriteRenderer.sprite = ArmorEmpty;
             }
             if (index == 101)
             {
                 if (Unit.GetComponent<BattleKnight>().blocks > 0)
                 {
-                    gameObject.GetComponent<SpriteRenderer>().sprite = Shield[Unit.GetComponent<BattleKnight>().blocks - 1];
+                    spriteRenderer.sprite = Shield[Unit.GetComponent<BattleKnight>().blocks - 1];
                 }
                 else
                 {
@@ -53,19 +54,19 @@ public class HealthSystem : MonoBehaviour
         }
         else
         {
-            if (gameObject.GetComponent<SpriteRenderer>().sprite.name == "health-full" && index > Unit.GetComponent<BattleEnemy>().health)
+            if (spriteRenderer.sprite.name == "health-full" && index > Unit.GetComponent<BattleEnemy>().health)
             {
-                gameObject.GetComponent<SpriteRenderer>().sprite = HealthEmpty;
+                spriteRenderer.sprite = HealthEmpty;
             }
-            if (gameObject.GetComponent<SpriteRenderer>().sprite.name == "armor-full" && index > Unit.GetComponent<BattleEnemy>().armor)
+            if (spriteRenderer.sprite.name == "armor-full" && index > Unit.GetComponent<BattleEnemy>().armor)
             {
-                gameObject.GetComponent<SpriteRenderer>().sprite = ArmorEmpty;
+                spriteRenderer.sprite = ArmorEmpty;
             }
             if (index == 101)
             {
                 if (Unit.GetComponent<BattleEnemy>().blocks > 0)
                 {
-                    gameObject.GetComponent<SpriteRenderer>().sprite = Shield[Unit.GetComponent<BattleEnemy>().blocks - 1];
+                    spriteRenderer.sprite = Shield[Unit.GetComponent<BattleEnemy>().blocks - 1];
                 }
                 else
                 {
@@ -86,18 +87,4 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        if(index == 101)
-        {
-            if (Unit == GameObject.Find("Knight"))
-            {
-                Unit.GetComponent<BattleKnight>().ShieldIcon = gameObject;
-            }
-            else
-            {
-                Unit.GetComponent<BattleEnemy>().ShieldIcon = gameObject;
-            }
-        }
-    }
 }

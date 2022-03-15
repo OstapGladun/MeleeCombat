@@ -111,6 +111,7 @@ public class Movement : MonoBehaviour
             script.CurrentLocationIndex = collision.GetComponent<MovementEnemy>().Index;
             script.LocationStatus[script.CurrentLocationIndex] = "visited";
             script.InitialEventIndex = 1;
+            script.BattleLandscape = GetComponentInChildren<LandscapeDetection>().landscapeName;
             SceneManager.LoadScene("Event");
         }
         if (collision.name == "Mill")

@@ -82,7 +82,7 @@ Miller coldly says goodbye and goes upstairs.
 #8
 "I was just passing by, I don't want to interfere, do your job." - you say. 
 >
-"Glad you understood, sir, we need to get food for our battle brothers. Our Order's invading operation wasn't free, so now we have some issues with supplies." - explains leitenaunt.
+"Glad you understood, sir, we need to get food for our battle brothers. Our Order's invading operation wasn't free, so now we have some issues with supplies." - leitenaunt explains.
 >
 "Yeah, and those villagers, despite clearly having enough grain, refuse to provide us with it." - says other soldier.
 >

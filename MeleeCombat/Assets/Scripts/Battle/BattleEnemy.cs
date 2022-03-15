@@ -9,33 +9,34 @@ public class BattleEnemy : MonoBehaviour
     public int index;
     public int maxHealth;
     public int maxArmor;
-    public Text Log;
-    public GameObject Mark;
-    public GameObject Character;
+    [SerializeField]private Text Log;
+    [SerializeField]private GameObject Mark;
+    [SerializeField]private GameObject Character;
     public int health;
     public int armor;
     public int blocks = 0;
+    private GameObject HealthPrefab;
+    private GameObject ArmorPrefab;
+    private GameObject ShieldIconPrefab;
+    private GameObject ParryIconPrefab;
+    public Sprite StunIcon;
     public bool IsParry = false;
     public bool IsStunned = false;
     public string[] NextAttackList;
-    public GameObject ShieldIconPrefab;
-    public GameObject ShieldIcon;
-    public Sprite StunIcon;
     public Sprite[] NextAttackIcon;
     public Sprite[] AttackSprite;
     public Sprite IdleAnimation;
     public Sprite BlockAnimation;
     public Sprite StanceAnimation;
     public int[] AttackMove;
-    public GameObject NextAttackPrefab;
-    public GameObject HealthPrefab;
-    public GameObject ArmorPrefab;
+    public GameObject NextAttackIndicator;
     private string Stance = "";
     private bool Animation = false;
     private int NextAttack;
     private float HealthPosition;
     private float ArmorPosition;
-    private HealthSystem script;
+    private HealthSystem HealthSystemScript;
+    private BattleKnight CharacterScript;
 
     void GetDamage(int damage, bool IgnoreArmor, bool Stun)
     {
@@ -97,8 +98,8 @@ public class BattleEnemy : MonoBehaviour
             {
                 case "Attack":
                     Log.text = "\n" + name + " attacks you;" + Log.text;
-                    Character.GetComponent<BattleKnight>().GetDamage(1, false, false);
-                    if (Character.GetComponent<BattleKnight>().IsParry)
+                    CharacterScript.GetDamage(1, false, false);
+                    if (CharacterScript.IsParry)
                     {
                         IsStunned = true;
                     }
@@ -108,11 +109,11 @@ public class BattleEnemy : MonoBehaviour
                     blocks++;
                     if (blocks == 1)
                     {
-                        script = ShieldIconPrefab.GetComponent<HealthSystem>();
-                        script.index = 101;
-                        script.Unit = gameObject;
-                        Instantiate(ShieldIconPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + ((ArmorPosition + 1) * 0.7f) + 0.4f, transform.position.y + 1.6f, 0), Quaternion.identity);
-                        script.index = 100;
+                        HealthSystemScript = ShieldIconPrefab.GetComponent<HealthSystem>();
+                        HealthSystemScript.index = 101;
+                        HealthSystemScript.Unit = gameObject;
+                        Instantiate(ShieldIconPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + ((ArmorPosition + 1) * 0.7f) + 0.4f, transform.position.y + 1.6f, 0), Quaternion.identity, gameObject.transform);
+                        HealthSystemScript.index = 100;
                     }
                     break;
                 case "Spear Stance":
@@ -120,65 +121,72 @@ public class BattleEnemy : MonoBehaviour
                     Stance = "Spear Stance";
                     break;
                 case "Shieldbreaker":
-                    Log.text = "\n" + name + " crushes your shield with battleaxe, removing your blocks;" + Log.text;
-                    Character.GetComponent<BattleKnight>().blocks = 0;
+                    Log.text = "\n" + name + " bashes your block with his shield, removing it;" + Log.text;
+                    CharacterScript.blocks = 0;
                     break;
             }
             yield return new WaitForSeconds(1);
             transform.position += new Vector3(AttackMove[NextAttack], 0, 0);
             SpriteManager();
-            Character.GetComponent<BattleKnight>().status = "New_turn";
+            CharacterScript.status = "New_turn";
         }
         else
         {
             Log.text += "\n" + name + " is no longer stunned;";
             yield return new WaitForSeconds(2);
             IsStunned = false;
-            Character.GetComponent<BattleKnight>().status = "New_turn";
+            CharacterScript.status = "New_turn";
         }
         Animation = false;
     }
 
     void Start()
     {
-        script = HealthPrefab.GetComponent<HealthSystem>();
+        CharacterScript = Character.GetComponent<BattleKnight>();
+        //generate health and armor indicator above character
+        HealthPrefab = Resources.Load<GameObject>("health-full");
+        ArmorPrefab = Resources.Load<GameObject>("armor-full");
+        ShieldIconPrefab = Resources.Load<GameObject>("block-icon");
+        ParryIconPrefab = Resources.Load<GameObject>("parry-icon");
+        HealthSystemScript = HealthPrefab.GetComponent<HealthSystem>();
+
         for (int i = 0; i < maxHealth; i++)
         {
-            script.Unit = gameObject;
-            script.index = i + 1;
-            Instantiate(HealthPrefab, new Vector3(transform.position.x - 1.1f + i * 0.7f, transform.position.y + 1.6f, 0), Quaternion.identity);
+            HealthSystemScript.Unit = gameObject;
+            HealthSystemScript.index = i + 1;
+            Instantiate(HealthPrefab, new Vector3(transform.position.x - 1.1f + i * 0.7f, transform.position.y + 1.6f, 0), Quaternion.identity, gameObject.transform);
             HealthPosition = i;
         }
-        script = ArmorPrefab.GetComponent<HealthSystem>();
+        HealthSystemScript = ArmorPrefab.GetComponent<HealthSystem>();
         for (int j = 0; j < maxArmor; j++)
         {
-            script.Unit = gameObject;
-            script.index = j + 1;
-            Instantiate(ArmorPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + (j * 0.7f), transform.position.y + 1.6f, 0), Quaternion.identity);
+            HealthSystemScript.Unit = gameObject;
+            HealthSystemScript.index = j + 1;
+            Instantiate(ArmorPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + (j * 0.7f), transform.position.y + 1.6f, 0), Quaternion.identity, gameObject.transform);
             ArmorPosition = j;
         }
     }
 
     void Update()
     {
-        if (Character.GetComponent<BattleKnight>().status == "New_turn")
+        if (CharacterScript.status == "New_turn")
         {
             NextAttack = Random.Range(0, NextAttackList.Length);
-            NextAttackPrefab.GetComponent<SpriteRenderer>().sprite = NextAttackIcon[NextAttack];
+            NextAttackIndicator.GetComponent<SpriteRenderer>().sprite = NextAttackIcon[NextAttack];
         }
         if (IsStunned)
         {
-            NextAttackPrefab.GetComponent<SpriteRenderer>().sprite = StunIcon;
+            NextAttackIndicator.GetComponent<SpriteRenderer>().sprite = StunIcon;
         }
         if (health <= 0)
         {
             Log.text = "\n" + name + " is defeated;" + Log.text;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, -90);
-            NextAttackPrefab.SetActive(false);
+            NextAttackIndicator.SetActive(false);
             gameObject.tag = "Untagged";
             Destroy(this);
         }
-        if (Character.GetComponent<BattleKnight>().status == "Enemy_turn")
+        if (CharacterScript.status == "Enemy_turn")
         {
             if (Animation == false)
             {
@@ -188,12 +196,12 @@ public class BattleEnemy : MonoBehaviour
                 StartCoroutine(EnemyAction());
             }
         }
-        if (Character.GetComponent<BattleKnight>().status == "Choose_target"|| Character.GetComponent<BattleKnight>().status == "Animation")
+        if (CharacterScript.status == "Choose_target"|| CharacterScript.status == "Animation")
         {
             if (Input.GetMouseButtonDown(0)&&Stance == "Spear Stance")
             {
                 Log.text = "\n" + "While attacking, you bump into " + name + "'s spear;" + Log.text;
-                Character.GetComponent<BattleKnight>().GetDamage(1, false, false);
+                CharacterScript.GetDamage(1, false, false);
                 SpriteManager();
             }
         }
@@ -201,7 +209,7 @@ public class BattleEnemy : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Character.GetComponent<BattleKnight>().status == "Choose_target")
+        if (CharacterScript.status == "Choose_target")
         {
             Mark.transform.position = new Vector3(transform.position.x + 0.25f, transform.position.y - 1f, 0);
         }
@@ -209,11 +217,11 @@ public class BattleEnemy : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (Character.GetComponent<BattleKnight>().status == "Choose_target")
+        if (CharacterScript.status == "Choose_target")
         {
             Mark.transform.position = new Vector3(-11, 4, 0);
-            Character.GetComponent<BattleKnight>().status = "Animation";
-            switch (Character.GetComponent<BattleKnight>().attack)
+            CharacterScript.status = "Animation";
+            switch (CharacterScript.attack)
             {
                 case "slash(Clone)":
                     StartCoroutine(AttackedAnimation());

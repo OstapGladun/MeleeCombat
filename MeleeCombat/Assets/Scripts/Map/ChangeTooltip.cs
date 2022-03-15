@@ -90,12 +90,15 @@ public class ChangeTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 case "Village Collision":
                     script.TooltipText.text = "Village \npart of the local settlement";
                     break;
+                //lendscape tooltips
             }
             switch (tag)
             {
                 case "patrol":
+                    Debug.Log("patrol");
                     script.TooltipText.text = "Patrol of Iron Tusk \nfew moderately trained soldiers, \npatrolling the land";
                     break;
+                //enemies and locations tooltips
             }
         }
         //for map tooltips

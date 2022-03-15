@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
-public class Ability : MonoBehaviour
+public class Ability : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public int StaminaCost;
     public bool IsActive;
@@ -13,45 +14,48 @@ public class Ability : MonoBehaviour
     public Sprite[] StaminaSprites;
     private Vector3 ScaleChange;
     public string hint;
-    [SerializeField] private Text hintText;
+    [SerializeField] public Text hintText;
+    private BattleKnight CharacterScript;
+
+    private void Start()
+    {
+        CharacterScript = Character.GetComponent<BattleKnight>();
+        AbilityNotHighlightened();
+    }
 
     void AbilityNotHighlightened()
     {
-        Character.GetComponent<BattleKnight>().AbilityHighlightened = false;
-        ScaleChange = new Vector3(0.3f, 0.3f, 1);
+        CharacterScript.AbilityHighlightened = false;
+        ScaleChange = new Vector3(0.28f, 0.28f, 1);
         gameObject.transform.localScale = ScaleChange;
         hintText.text = "Choose an ability to use";
     }
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
-        if (Character.GetComponent<BattleKnight>().status == "New_turn")
+        //set hint depending on status
+        if (CharacterScript.status == "New_turn")
         {
             hintText.text = "Choose an ability to use";
             Stamina.GetComponent<Image>().sprite = StaminaSprites[3];
         }
-        if (Character.GetComponent<BattleKnight>().status == "Ability_choice"&&!Character.GetComponent<BattleKnight>().AbilityHighlightened)
+        if (CharacterScript.status == "Ability_choice"&&!CharacterScript.AbilityHighlightened)
         {
             hintText.text = "Choose an ability to use";
         }
-        if (Character.GetComponent<BattleKnight>().status == "Choose_target")
+        if (CharacterScript.status == "Choose_target")
         {
             hintText.text = "Choose enemy to attack";
         }
-        if (Character.GetComponent<BattleKnight>().status == "Animation" && Character.GetComponent<BattleKnight>().stamina > 0)
+        if (CharacterScript.status == "Animation" && CharacterScript.stamina > 0)
         {
             hintText.text = "Performing ability...";
         }
-        if (Character.GetComponent<BattleKnight>().status == "Enemy_turn")
+        if (CharacterScript.status == "Enemy_turn")
         {
             hintText.text = "Wait for enemy to attack";
         }
-        if (Character.GetComponent<BattleKnight>().status == "Victory_screen")
+        if (CharacterScript.status == "Victory_screen")
         {
             hintText.text = "Choose an ability to unlock";
             //replace later
@@ -60,38 +64,38 @@ public class Ability : MonoBehaviour
         }
     }
 
-    void OnMouseOver()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if (Character.GetComponent<BattleKnight>().status == "Ability_choice" && Character.GetComponent<BattleKnight>().stamina >= StaminaCost)
+        if (CharacterScript.status == "Ability_choice" && CharacterScript.stamina >= StaminaCost)
         {
-            Character.GetComponent<BattleKnight>().AbilityHighlightened = true;
-            ScaleChange = new Vector3(0.36f, 0.36f, 1);
+            CharacterScript.AbilityHighlightened = true;
+            ScaleChange = new Vector3(0.34f, 0.34f, 1);
             gameObject.transform.localScale = ScaleChange;
             hintText.text = hint;
         }
     }
 
-    void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
         AbilityNotHighlightened();
     }
 
-    private void OnMouseUpAsButton()
+    public void AbilityPressed()
     {
-        if (Character.GetComponent<BattleKnight>().status == "Ability_choice" && Character.GetComponent<BattleKnight>().stamina >= StaminaCost)
+        if (CharacterScript.status == "Ability_choice" && CharacterScript.stamina >= StaminaCost)
         {
-            Character.GetComponent<BattleKnight>().stamina -= StaminaCost;
-            Stamina.GetComponent<Image>().sprite = StaminaSprites[Character.GetComponent<BattleKnight>().stamina];
+            CharacterScript.stamina -= StaminaCost;
+            Stamina.GetComponent<Image>().sprite = StaminaSprites[CharacterScript.stamina];
             switch (IsActive)
             {
                 case true:
-                    Character.GetComponent<BattleKnight>().attack = name;
-                    Character.GetComponent<BattleKnight>().status = "Choose_target";
+                    CharacterScript.attack = name;
+                    CharacterScript.status = "Choose_target";
                     hintText.text = "Choose enemy to attack";
                     break;
                 case false:
-                    Character.GetComponent<BattleKnight>().attack = name;
-                    Character.GetComponent<BattleKnight>().status = "Animation";
+                    CharacterScript.attack = name;
+                    CharacterScript.status = "Animation";
                     break;
             }
         }

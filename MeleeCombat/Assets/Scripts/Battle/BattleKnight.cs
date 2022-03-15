@@ -6,53 +6,33 @@ using UnityEngine.SceneManagement;
 
 public class BattleKnight : MonoBehaviour
 {
-    public Sprite IdleAnimation;
-    public Sprite BlockAnimation;
-    public Sprite SlashAnimation;
-    public GameObject HealthPrefab;
-    public GameObject ArmorPrefab;
-    public GameObject ShieldIconPrefab;
-    public GameObject ShieldIcon;
-    public GameObject ParryIconPrefab;
-    public GameObject Block;
-    public GameObject Slash;
-    public GameObject Parry;
-    public GameObject VictoryUI;
-    public Text Log;
-    public Text Results;
+    [SerializeField]private Sprite IdleAnimation;
+    [SerializeField]private Sprite BlockAnimation;
+    [SerializeField]private Sprite SlashAnimation;
+    private GameObject HealthPrefab;
+    private GameObject ArmorPrefab;
+    private GameObject ShieldIconPrefab;
+    private GameObject ParryIconPrefab;
+    [SerializeField]private Text Log;
+    [SerializeField]private Text Results;
+    [SerializeField]private SpriteRenderer BattleBackground;
     public int[] Reward;
     public int health = 2;
     public int armor = 2;
     public int blocks = 0;
-    public string status = "New_turn";
     public int stamina = 3;
+    public string status = "New_turn";
     public string attack;
     public bool IsParry = false;
     public bool IsStunned = false;
     private bool CRrunning = false;
-    private HealthSystem script;
     private float HealthPosition;
     private float ArmorPosition;
     public bool AbilityHighlightened = false;
-
-    IEnumerator Defeat()
-    {
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 90);
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene("Defeat");
-    }
-
-    IEnumerator Victory()
-    {
-        VictoryUI.SetActive(true);
-        yield return new WaitForSeconds(0.1f);
-        Results.text = "You loot fallen enemies and get " + Reward[0] + " supplies. \n";
-        if (health < Movement.maxHealth)
-        {
-            Results.text += "You spend " + (Movement.maxHealth - health) * 2 + " supplies to heal your wounds. \n";
-        }
-        Results.text += "With experience you got on battlefield you are able to master new battle ability:";
-    }
+    [SerializeField]private GameObject VictoryUI;
+    [SerializeField]private Canvas canvas;
+    private HealthSystem HealthSystemScript;
+    private GameController AssetHolderScript;
 
     public void GetDamage(int damage, bool IgnoreArmor, bool Stun)
     {
@@ -132,28 +112,94 @@ public class BattleKnight : MonoBehaviour
         status = "Ability_choice";
     }
 
+    void InstantiateAbility(string AbilityName, float n)
+    {
+        GameObject Ability = Instantiate(Resources.Load<GameObject>(AbilityName), Vector3.zero, Quaternion.identity);
+        //create ability button
+
+        Ability.GetComponent<Ability>().Character = GameObject.Find("Knight");
+        Ability.GetComponent<Ability>().Stamina = GameObject.Find("Stamina").GetComponent<Image>();
+        Ability.GetComponent<Ability>().hintText = GameObject.Find("Hint").GetComponent<Text>();
+        //set variables 
+
+        RectTransform rectTransform = Ability.GetComponent<RectTransform>();
+        Ability.transform.SetParent(canvas.transform);
+        //put ability button to canvas
+
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(350, 350);
+        //set anchor in the left bottom corner for ability button
+
+        rectTransform.position = new Vector2(80 + 125 * n, 70);
+        //position ability button
+    }
+
+    IEnumerator Defeat()
+    {
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 90);
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Defeat");
+    }
+
+    IEnumerator Victory()
+    {
+        VictoryUI.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        Results.text = "You loot fallen enemies and get " + Reward[0] + " supplies and " + Reward[1] + " silver florins. \n";
+        if (health < Movement.maxHealth)
+        {
+            Results.text += "You spend " + (Movement.maxHealth - health) * 2 + " supplies to heal your wounds. \n";
+        }
+        Results.text += "With experience you got on battlefield you are able to master new battle ability:";
+    }
+
     void Start()
     {
-        script = HealthPrefab.GetComponent<HealthSystem>();
+        //set background according to landscape where battle occurs
+        if (AssetHolderScript!=null && AssetHolderScript.BattleLandscape != null)
+        {
+            BattleBackground.sprite = Resources.Load<Sprite>(AssetHolderScript.BattleLandscape);
+            AssetHolderScript.BattleLandscape = null;
+        }
+        //generate health and armor indicator above character
+        HealthPrefab = Resources.Load<GameObject>("health-full");
+        ArmorPrefab = Resources.Load<GameObject>("armor-full");
+        ShieldIconPrefab = Resources.Load<GameObject>("block-icon");
+        ParryIconPrefab= Resources.Load<GameObject>("parry-icon");
+        HealthSystemScript = HealthPrefab.GetComponent<HealthSystem>();
         for (int i = 0; i < Movement.maxHealth; i++)
         {
-            script.Unit = gameObject;
-            script.index = i + 1;
-            Instantiate(HealthPrefab, new Vector3(transform.position.x - 1.1f + i * 0.7f, transform.position.y + 1.6f, 0), Quaternion.identity);
+            HealthSystemScript.Unit = gameObject;
+            HealthSystemScript.index = i + 1;
+            Instantiate(HealthPrefab, new Vector3(transform.position.x - 1.1f + i * 0.7f, transform.position.y + 1.6f, 0), Quaternion.identity, gameObject.transform);
             HealthPosition = i;
         }
-        script = ArmorPrefab.GetComponent<HealthSystem>();
+        HealthSystemScript = ArmorPrefab.GetComponent<HealthSystem>();
         for (int j = 0; j < Movement.maxArmor; j++)
         {
-            script.Unit = gameObject;
-            script.index = j + 1;
-            Instantiate(ArmorPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + (j * 0.7f), transform.position.y + 1.6f, 0), Quaternion.identity);
+            HealthSystemScript.Unit = gameObject;
+            HealthSystemScript.index = j + 1;
+            Instantiate(ArmorPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + (j * 0.7f), transform.position.y + 1.6f, 0), Quaternion.identity, gameObject.transform);
             ArmorPosition = j;
         }
-        //add ability system
-        Instantiate(Block, new Vector3(-7.9f, -4, 0), Quaternion.identity);
-        Instantiate(Slash, new Vector3(-5.9f, -4, 0), Quaternion.identity);
-        Instantiate(Parry, new Vector3(-3.9f, -4, 0), Quaternion.identity);
+        //get abilities from asset holder or create 3 default abilities
+        if (GameObject.Find("Asset Holder") != null)
+        {
+            AssetHolderScript = GameObject.Find("Asset Holder").GetComponent<GameController>();
+            float x = 0;
+            foreach (string Ability in AssetHolderScript.Abilities)
+            {
+                InstantiateAbility(Ability, x);
+                x += 1;
+            }
+        }
+        else
+        {
+            InstantiateAbility("block", 0);
+            InstantiateAbility("slash", 1);
+            InstantiateAbility("parry", 2);
+        }
         VictoryUI.SetActive(false);
     }
 
@@ -182,6 +228,7 @@ public class BattleKnight : MonoBehaviour
                 }
                 break;
             case "Animation":
+                //perform ability
                 switch (attack)
                 {
                     case "block(Clone)":
@@ -191,11 +238,11 @@ public class BattleKnight : MonoBehaviour
                         blocks++;
                         if (blocks == 1)
                         {
-                            script = ShieldIconPrefab.GetComponent<HealthSystem>();
-                            script.index = 101;
-                            script.Unit = gameObject;
-                            Instantiate(ShieldIconPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + ((ArmorPosition + 1) * 0.7f) + 0.4f, transform.position.y + 1.6f, 0), Quaternion.identity);
-                            script.index = 100;
+                            HealthSystemScript = ShieldIconPrefab.GetComponent<HealthSystem>();
+                            HealthSystemScript.index = 101;
+                            HealthSystemScript.Unit = gameObject;
+                            Instantiate(ShieldIconPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + ((ArmorPosition + 1) * 0.7f) + 0.4f, transform.position.y + 1.6f, 0), Quaternion.identity, gameObject.transform);
+                            HealthSystemScript.index = 100;
                         }
                         break;
                     case "slash(Clone)":
@@ -207,11 +254,11 @@ public class BattleKnight : MonoBehaviour
                     case "parry(Clone)":
                         Log.text = "\n" + "You are now in parry stance;" + Log.text;
                         IsParry = true;
-                        script = ParryIconPrefab.GetComponent<HealthSystem>();
-                        script.index = 201;
-                        script.Unit = gameObject;
-                        Instantiate(ParryIconPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + ((ArmorPosition + 1) * 0.7f) + 0.4f, transform.position.y + 1.6f, 0), Quaternion.identity);
-                        script.index = 200;
+                        HealthSystemScript = ParryIconPrefab.GetComponent<HealthSystem>();
+                        HealthSystemScript.index = 201;
+                        HealthSystemScript.Unit = gameObject;
+                        Instantiate(ParryIconPrefab, new Vector3(transform.position.x - 1.1f + ((HealthPosition + 1) * 0.7f) + ((ArmorPosition + 1) * 0.7f) + 0.4f, transform.position.y + 1.6f, 0), Quaternion.identity, gameObject.transform);
+                        HealthSystemScript.index = 200;
                         status = "Ability_choice";
                         break;
                 }

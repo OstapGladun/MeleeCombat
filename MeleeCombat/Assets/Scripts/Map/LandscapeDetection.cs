@@ -9,11 +9,13 @@ public class LandscapeDetection : MonoBehaviour
     [SerializeField] private float overallVisibility;
     private ChangeTooltip scriptLandscape;
     private MovementEnemy scriptEnemy;
+    public string landscapeName;
 
     void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "landscapecollision")
         {
+            landscapeName = collision.name.Replace(" Collision","");
             scriptLandscape = collision.gameObject.GetComponent<ChangeTooltip>();
             scriptEnemy = GetComponentInParent<MovementEnemy>();
             GetComponentInParent<AIPath>().maxSpeed = scriptLandscape.passability * overallSpeed;
